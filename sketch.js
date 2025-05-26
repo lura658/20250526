@@ -57,9 +57,9 @@ function draw() {
   if (predictions.length > 0) {
     const keypoints = predictions[0].scaledMesh;
     let idx = 94; // 預設額頭
-    if (gesture === "石頭") idx = 1;    // 鼻子
-    else if (gesture === "布") idx = 13; // 嘴巴
-    // 剪刀時維持額頭(94)
+    if (gesture === "石頭") idx = 1;      // 鼻子
+    else if (gesture === "剪刀") idx = 33; // 右眼
+    else if (gesture === "布") idx = 152;  // 下巴
     console.log("手勢:", gesture, "關鍵點idx:", idx);
     const [x, y] = keypoints[idx];
     noFill();
