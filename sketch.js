@@ -60,6 +60,7 @@ function draw() {
     if (gesture === "石頭") idx = 1;    // 鼻子
     else if (gesture === "布") idx = 13; // 嘴巴
     // 剪刀時維持額頭(94)
+    console.log("手勢:", gesture, "關鍵點idx:", idx);
     const [x, y] = keypoints[idx];
     noFill();
     stroke(255, 0, 0);
