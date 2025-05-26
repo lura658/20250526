@@ -71,20 +71,25 @@ function draw() {
 
 // 簡單判斷剪刀石頭布
 function detectGesture(landmarks) {
-  // 取得每根手指的指尖座標
-  const tips = [8, 12, 16, 20]; // 食指、中指、無名指、小指
-  let extended = 0;
-  for (let i = 0; i < tips.length; i++) {
-    if (landmarks[tips[i]][1] < landmarks[tips[i] - 2][1]) {
-      extended++;
-    }
-  }
-  // 大拇指
+  // tips: [8, 12, 16, 20] 分別為食指、中指、無名指、小指
+  // 判斷食指和中指是否伸直
+  let isIndexExtended = landmarks[8][1] < landmarks[6][1];
+  let isMiddleExtended = landmarks[12][1] < landmarks[10][1];
+  let isRingExtended = landmarks[16][1] < landmarks[14][1];
+  let isPinkyExtended = landmarks[20][1] < landmarks[18][1];
   let thumbExtended = landmarks[4][0] > landmarks[3][0];
 
-  // 判斷
-  if (extended === 0 && !thumbExtended) return "石頭";
-  if (extended === 2 && !thumbExtended) return "剪刀";
-  if (extended === 4) return "布";
+  // 石頭：全部彎曲
+  if (!isIndexExtended && !isMiddleExtended && !isRingExtended && !isPinkyExtended && !thumbExtended) {
+    return "石頭";
+  }
+  // 剪刀：食指和中指伸直，其餘彎曲
+  if (isIndexExtended && isMiddleExtended && !isRingExtended && !isPinkyExtended && !thumbExtended) {
+    return "剪刀";
+  }
+  // 布：全部伸直
+  if (isIndexExtended && isMiddleExtended && isRingExtended && isPinkyExtended) {
+    return "布";
+  }
   return "";
 }
