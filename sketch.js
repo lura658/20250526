@@ -37,17 +37,7 @@ function handModelReady() {
 function draw() {
   image(video, 0, 0, width, height);
 
-  // 臉部關鍵點
-  if (predictions.length > 0) {
-    const keypoints = predictions[0].scaledMesh;
-    const [x, y] = keypoints[94];
-    noFill();
-    stroke(255, 0, 0);
-    strokeWeight(4);
-    ellipse(x, y, 50, 50);
-  }
-
-  // 手部關鍵點
+  let gesture = "";
   if (handPredictions.length > 0) {
     const hand = handPredictions[0];
     for (let i = 0; i < hand.landmarks.length; i++) {
@@ -56,12 +46,25 @@ function draw() {
       noStroke();
       ellipse(x, y, 10, 10);
     }
-
     // 剪刀石頭布判斷
-    const gesture = detectGesture(hand.landmarks);
+    gesture = detectGesture(hand.landmarks);
     fill(0);
     textSize(32);
     text(gesture, 20, 50);
+  }
+
+  // 臉部關鍵點
+  if (predictions.length > 0) {
+    const keypoints = predictions[0].scaledMesh;
+    let idx = 94; // 預設額頭
+    if (gesture === "石頭") idx = 1;    // 鼻子
+    else if (gesture === "布") idx = 13; // 嘴巴
+    // 剪刀時維持額頭(94)
+    const [x, y] = keypoints[idx];
+    noFill();
+    stroke(255, 0, 0);
+    strokeWeight(4);
+    ellipse(x, y, 50, 50);
   }
 }
 
